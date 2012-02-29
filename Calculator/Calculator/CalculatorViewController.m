@@ -14,6 +14,7 @@
 @property (nonatomic) BOOL userIsInTheMiddleOfEnteringANumber;
 @property (strong, nonatomic) CalculatorBrain* brain;
 
+@property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 
 
 @end
@@ -21,6 +22,7 @@
 
 
 @implementation CalculatorViewController
+@synthesize toolbar = _toolbar;
 
 @synthesize display, userIsInTheMiddleOfEnteringANumber, brain = _brain;
 @synthesize userInputSummary = _userInputSummary;
@@ -185,6 +187,7 @@ int const TOTAL_NUM_OF_LETTERS = 30;
     
 }
 
+
 - (IBAction)digitPressed:(UIButton*)sender {
     
     // if user types dot (.) and there's already a dot don't allow it
@@ -252,20 +255,61 @@ int const TOTAL_NUM_OF_LETTERS = 30;
     if ([segue.identifier isEqualToString:@"showGraph"]) {
         //UIViewController *graphController = segue.destinationViewController;
         GraphViewController *graphController = segue.destinationViewController;
-        graphController.program = self.brain.program;
+        graphController.calculatorProgram = self.brain.program;
     }
 }
 
+- (GraphViewController *)splitViewGraphViewController
+{
+    id gvc = [self.splitViewController.viewControllers lastObject];
+    if (![gvc isKindOfClass:[GraphViewController class]]) {
+        gvc = nil;
+    }
+    return gvc;
+}
+
+- (IBAction)graphPressed {
+    if ([self splitViewGraphViewController]) {                      // if in split view
+        [self splitViewGraphViewController].calculatorProgram = self.brain.program;  // just set program in detail
+    }
+};
+
+/*
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+*/
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    } else {
+        return YES;
+    }
+}
+
+
+-(NSString *) returnTitle{
+    NSString* title;
+    NSArray* items = [self.toolbar items];
+    for (UIBarButtonItem *item in items) {
+        if (item.title) {
+            title = item.title;
+            break;
+        }
+    
+    }
+    return title;
+};
 
 - (void)viewDidUnload {
     [self setUserInputSummary:nil];
     [self setVariablesDisplay:nil];
     [self setTestVariableValuesDisplay:nil];
+    [self setToolbar:nil];
     [super viewDidUnload];
 }
 @end

@@ -14,8 +14,10 @@
 @implementation GraphView
 
 @synthesize scale = _scale, dataSource = _dataSource, origin = _origin;
+@synthesize delegate = _delegate;
 
-#define DEFAULT_SCALE 0.9;
+
+#define DEFAULT_SCALE 30
 
 -(CGFloat) scale {    
     if (!_scale) {
@@ -30,7 +32,7 @@
 - (void) setScale:(CGFloat)scale {
     if (_scale != scale) {
         _scale = scale;
-        [self setNeedsDisplay];
+        [self setNeedsDisplay];        
     }
 }
 
@@ -42,7 +44,6 @@
         [self setNeedsDisplay];
     }
 }
-
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -56,19 +57,18 @@
 
 - (void) setOriginInContext: (CGContextRef) context {
     UIGraphicsPushContext(context);
+    CGPoint midPoint;
+    
+    midPoint.x = self.bounds.origin.x + self.bounds.size.width / 2;
+    midPoint.y = self.bounds.origin.y + self.bounds.size.height / 2;     
+    
     // if origin is not set, set it to middle point
-    if (CGPointEqualToPoint(self.origin, CGPointZero) == YES) {
-        CGPoint midPoint;
-        
-        midPoint.x = self.bounds.origin.x + self.bounds.size.width / 2;
-        midPoint.y = self.bounds.origin.y + self.bounds.size.height / 2;    
-        
-        UIGraphicsPopContext();
-        
+    // save origin to user defaults only if it's not yero or middle point
+    if  (CGPointEqualToPoint(self.origin, CGPointZero) == YES) {
         self.origin = midPoint;
-
     }
     
+    UIGraphicsPopContext();    
 }
 
 - (void) pinch: (UIPinchGestureRecognizer *) gesture{
@@ -77,6 +77,10 @@
         gesture.state == UIGestureRecognizerStateChanged) {
         
         self.scale *= gesture.scale;
+        
+        //save new scale to user defaults
+        [self.delegate graphView:self saveScale:self.scale];    
+        
         gesture.scale = 1;// reset gestures scale to 1 (so future changes are incremental, not cumulative)        
     }
 }
@@ -86,6 +90,10 @@
     
     if (gesture.state == UIGestureRecognizerStateEnded){
         self.origin = [gesture locationInView:self];
+        
+        //save new origin to user defaults        
+        [self.delegate graphView:self saveOrigin:self.origin];     
+        
     }
     
 }
@@ -98,6 +106,10 @@
       //  self.origin = [gesture translationInView:self];
         CGPoint translation = [gesture translationInView:self];
         self.origin = CGPointMake(self.origin.x + translation.x/2, self.origin.y + translation.y/2);
+        
+        //save new origin to user defaults
+        [self.delegate graphView:self saveOrigin:self.origin];     
+        
         [gesture setTranslation:CGPointZero inView:self];
     }
 }
@@ -147,6 +159,7 @@
         pointYCalculated = [self.dataSource calculateFunctionForX:pointXCalculated withSender:self];
         
         pointY = pointYCalculated * self.scale;        
+
         
         CGContextAddLineToPoint(context, self.bounds.origin.x + i, self.bounds.origin.y + self.origin.y - pointY);
     }
@@ -156,5 +169,11 @@
     
 }
 
+
+- (BOOL) splitViewController:(UISplitViewController *)svc 
+    shouldHideViewController:(UIViewController *)vc
+               inOrientation:(UIInterfaceOrientation)orientation{
+    return NO;
+}
 
 @end

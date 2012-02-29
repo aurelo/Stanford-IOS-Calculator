@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TitlePresenter.h"
 
-@interface CalculatorViewController : UIViewController
+@interface CalculatorViewController : UIViewController <TitlePresenter>
 
 
 @property (weak, nonatomic) IBOutlet UILabel *display;
@@ -25,5 +26,8 @@
 - (IBAction)backspacePressed;
 - (IBAction)undoPressed;
 - (IBAction)setTestVariables:(UIButton *)sender;
+- (IBAction)graphPressed;
+
+-(NSString *) returnTitle;
 
 @end
