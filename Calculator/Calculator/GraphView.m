@@ -15,6 +15,7 @@
 
 @synthesize scale = _scale, dataSource = _dataSource, origin = _origin;
 @synthesize delegate = _delegate;
+@synthesize drawingWithPoints = _drawingWithPoints;
 
 
 #define DEFAULT_SCALE 30
@@ -44,6 +45,19 @@
         [self setNeedsDisplay];
     }
 }
+
+
+- (void) setDrawingWithPoints:(BOOL)drawingWithPoints{
+    if (
+        (drawingWithPoints && !_drawingWithPoints)
+        ||
+        (!drawingWithPoints && _drawingWithPoints)
+        ) {
+        _drawingWithPoints = drawingWithPoints,
+        [self setNeedsDisplay];
+    }
+}
+
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -160,8 +174,16 @@
         
         pointY = pointYCalculated * self.scale;        
 
-        
-        CGContextAddLineToPoint(context, self.bounds.origin.x + i, self.bounds.origin.y + self.origin.y - pointY);
+        if (self.drawingWithPoints) {
+            CGContextAddArcToPoint(context, self.bounds.origin.x + i,self.bounds.origin.y + self.origin.y - pointY
+                                   , self.bounds.origin.x + i,self.bounds.origin.y + self.origin.y - pointY,
+                                   0);
+        }
+        else
+        {
+        CGContextAddLineToPoint(context, self.bounds.origin.x + i, self.bounds.origin.y + self.origin.y - pointY);            
+        }
+
     }
     CGContextSetLineWidth(context, 3.0);
     [[UIColor greenColor] setStroke];

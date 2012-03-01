@@ -26,6 +26,7 @@
 
 @property (nonatomic) CGFloat scale;
 @property (nonatomic) CGPoint origin;
+@property (nonatomic) BOOL drawingWithPoints;
 @property (nonatomic, weak) IBOutlet id <GraphViewDataSource> dataSource;
 @property (nonatomic, weak) IBOutlet id <GraphViewDelegate> delegate;
 

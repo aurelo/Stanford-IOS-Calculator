@@ -465,7 +465,7 @@
                                 <rect key="frame" x="236" y="8" width="79" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <connections>
-                                    <action selector="pointLineSwitch:" destination="UMP-qI-Oq9" eventType="valueChanged" id="JlL-Af-0S7"/>
+                                    <action selector="pointLineSwitch:" destination="UMP-qI-Oq9" eventType="valueChanged" id="OuO-0y-ZhH"/>
                                 </connections>
                             </switch>
                         </barButtonItem>

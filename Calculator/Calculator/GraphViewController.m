@@ -17,7 +17,7 @@
   @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;        // to put splitViewBarButtonitem in
  // @property (strong, nonatomic) UIPopoverController *masterPopoverController;
  @property (weak, nonatomic) IBOutlet UILabel *descriptionOfProgram;
- @property (nonatomic) BOOL drawingWithPoints;
+
 
 @end
 
@@ -29,25 +29,6 @@
 
 @synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
 //@synthesize masterPopoverController = _masterPopoverController;
-@synthesize drawingWithPoints = _drawingWithPoints;
-
-
-- (void) setDrawingWithPoints:(BOOL)drawingWithPoints{
-    if (
-        (drawingWithPoints && !_drawingWithPoints)
-        ||
-         (!drawingWithPoints && _drawingWithPoints)
-        ) {
-        _drawingWithPoints = drawingWithPoints,
-        [self.graphView setNeedsDisplay];
-    }
-}
-
-
-- (IBAction)pointLineSwitch:(UISwitch *)sender {
-        self.drawingWithPoints = sender.on;
-}
-
 
 
 #define GRAPH_STATE_KEY @"com.example.graph.state"
@@ -143,6 +124,9 @@
 }
 
 
+- (IBAction)pointLineSwitch:(UISwitch *)sender {
+    self.graphView.drawingWithPoints = sender.on;
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

@@ -9,11 +9,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Calculator/GraphViewController.m"
-         timestampString = "352184325.565498"
+         timestampString = "352266109.570073"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "77"
-         endingLineNumber = "77"
+         startingLineNumber = "58"
+         endingLineNumber = "58"
          landmarkName = "-switchGraphViewPointAndOrigin:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -23,11 +23,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Calculator/GraphView.m"
-         timestampString = "352188903.07818"
+         timestampString = "352266109.570073"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "43"
-         endingLineNumber = "43"
+         startingLineNumber = "44"
+         endingLineNumber = "44"
          landmarkName = "-setOrigin:"
          landmarkType = "5">
       </FileBreakpoint>
